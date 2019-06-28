@@ -1,9 +1,4 @@
-library(leaflet)
-library(lubridate)
-library(shinyBS)
 library(shinydashboard)
-# library(dashboardthemes)
-library(shinyjs)
 
 dashboardPage(
   dashboardHeader(),

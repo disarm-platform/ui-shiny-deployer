@@ -8,35 +8,40 @@ shinyServer(function(input, output) {
   file.remove("to_deploy/ui.R")
   file.remove("to_deploy/server.R")
   
+  # get all files in the directories, recursively
+  f <- list.files("to_deploy", include.dirs = F, full.names = T, recursive = T)
+  # remove the files
+  file.remove(f)
+  
 
   observeEvent(input$deploy,{
     
-    browser()
+    withProgress(message = 'Deploying your app',{
+    
     # Download server and ui files
     download(input$ui,
              destfile = "to_deploy/ui.R")
     download(input$server,
              destfile = "to_deploy/server.R")
     
-    # Might have to figure out and install relevant packages
-    ui_packages <- list.functions.in.file("to_deploy/ui.R", alphabetic = TRUE)
-    server_packages <- list.functions.in.file("to_deploy/server.R", alphabetic = TRUE)
-    packages <- c(names(ui_packages),names(server_packages))[grep("package", c(names(ui_packages),names(server_packages)))]
-    packages <- substr(packages, 9, 100)
-    packages <- packages[-which(packages == "base")]
-    
     # Define shiny app account
-    shiny_inputs <- list(name=input$account, 
-     token=input$token, 
-     secret=input$secret)
+    # shiny_inputs <- list(name=input$account, 
+    #  token=input$token, 
+    #  secret=input$secret)
   
-    rsconnect::setAccountInfo(shiny_inputs[[1]],
-                                     shiny_inputs[[2]],
-                                     shiny_inputs[[3]])
+    rsconnect::setAccountInfo(input$account,
+                              token=input$token,
+                              input$secret)
     
     deployApp(appDir = "to_deploy",
               appName = input$app_name,
               account = input$account)
+    
+    })
+    
+    showNotification("App deployed at", paste0(shiny_inputs[[1]],
+                                               ".shinyapps.io",
+                                               "/",input$app_name))
   })
   
 

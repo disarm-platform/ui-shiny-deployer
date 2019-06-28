@@ -39,7 +39,7 @@ shinyServer(function(input, output) {
     
     })
     
-    showNotification("App deployed at", paste0(shiny_inputs[[1]],
+    showNotification("App deployed at", paste0(input$account,
                                                ".shinyapps.io",
                                                "/",input$app_name))
   })

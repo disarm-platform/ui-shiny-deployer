@@ -10,7 +10,7 @@ dashboardPage(
                   box(
                   textInput("ui", "Link to ui.R"),
                   textInput("server", "Link to server.R"),
-                  textInput("algo", "Algorithm URL"),
+                  textInput("algo", "Algorithm URL", placeholder = "Not needed right now.."),
                   textInput("app_name", "App name"),
                   textInput("account", "shinyapps account"),
                   textInput("token", "shinyapps token"),
